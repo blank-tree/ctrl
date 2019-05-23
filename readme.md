@@ -49,10 +49,10 @@ npm install
 
 #### Application configuration
 
-Now edit the `config.js` file with the correct pins (`PIN_BUTTON` and `PIN_SWITCH`)for the button and the switch, and the device number (`DEVICE_NO`) with
+Now edit the `app.js` file with the correct pins (`PIN_BUTTON` and `PIN_SWITCH`)for the button and the switch, and the device number (`DEVICE_NO`) with
 
 ```
-vim config.js
+vim app.js
 ```
 
 Start the application

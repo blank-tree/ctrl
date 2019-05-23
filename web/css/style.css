@@ -1,0 +1,26 @@
+body {
+	margin: 0;
+}
+
+#overlay {
+	width: 100vw;
+	height: 100vh;
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	background-color: black;
+}
+
+#main-wrapper {
+	background-color: black;
+	width: 100vw;
+	height: 100vh;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+video {
+	width: 100%;
+}
