@@ -39,7 +39,7 @@ server.listen(3000, () => {
 });
 
 
-// Buttons and Switches
+// Button and Switches
 if (RPI) {
 	button.watch((err, value) => {
 		if (err) {

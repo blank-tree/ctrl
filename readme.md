@@ -55,9 +55,18 @@ Now edit the `app.js` file with the correct pins (`PIN_BUTTON` and `PIN_SWITCH`)
 vim app.js
 ```
 
+Load your video files into `web/video/`. Also edit the `script.js`file in `web/js/script.js` and set the device number (`DEVICE_ID`) and the paths to the videos (`PATH_CTRL_0_VOICEOVER`, `PATH_CTRL_0_NO_VOICEOVER` and `PATH_CTRL_1`) to the video files. Don't forget the file extension. The files are being served by express and need to be in this format: `video/YOUR_FILE.mov`.
+
+```
+cd web/js
+vim script.js
+```
+
 Start the application
 
 ```
+cd ..
+cd ..
 node app.js
 ```
 

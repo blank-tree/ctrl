@@ -3,7 +3,9 @@ $(function() {
 	// Settings
 	const DEVICE_ID = 0;
 	const RPI = false;
-	// const VIDEO_RUNTIME = 307000; // 5'07'' in ms
+	const PATH_CTRL_0_VOICEOVER = "video/ctrl-0-voiceover.mov";
+	const PATH_CTRL_0_NO_VOICEOVER = "video/ctrl-0-no_voiceover.mov";
+	const PATH_CTRL_1 = "video/ctrl-1.mov";
 	
 
 	// Application
@@ -11,18 +13,17 @@ $(function() {
 	if (DEVICE_ID === 0) {
 		var statusVoiceover = false;
 	}
-	var statusButton = false;
 	var statusVideo = false;
 	var $overlay = $('#overlay');
 	var $mainWrapper = $('#main-wrapper');
 	var ctrlVideo = document.getElementById('ctrl');
 
 	if (DEVICE_ID === 0) {
-		// ctrlVideo.src = "video/ctrl-0-voiceover.mov";
-		$('video').append('<source src="video/ctrl-0-voiceover.mov" type="video/mp4">');
+		ctrlVideo.src = PATH_CTRL_0_VOICEOVER;
+		ctrlVideo.load();
 	} else if (DEVICE_ID === 1) {
-		// ctrlVideo.src = "video/ctrl-1.mov";
-		$('video').append('<source src="video/ctrl1.mov" type="video/mp4">');
+		ctrlVideo.src = PATH_CTRL_1;
+		ctrlVideo.load();
 	} else {
 		alert('WRONG DEVICE_ID! CAN ONLY BE 0 OR 1.');
 	}
@@ -42,8 +43,7 @@ $(function() {
 			});
 		}
 
-		socket.on('button', function(msg) {
-			statusButton = msg === 'true';
+		socket.on('button', function() {
 			runVideo();
 		});
 
@@ -75,11 +75,12 @@ $(function() {
 
 			// add the correct video if it's the device with the voiceover
 			if (DEVICE_ID === 0) {
-				$('video source').remove();
 				if (statusVoiceover) {
-					$('video').append('<source src="video/ctrl-0-voiceover.mov" type="video/mp4">');
+					ctrlVideo.src = PATH_CTRL_0_VOICEOVER;
+					ctrlVideo.load();
 				} else {
-					$('video').append('<source src="video/ctrl-0-no_voiceover.mov" type="video/mp4">');
+					ctrlVideo.src = PATH_CTRL_0_NO_VOICEOVER;
+					ctrlVideo.load();
 				}
 				console.log('video voiceover is ' + statusVoiceover);
 			}
@@ -87,30 +88,23 @@ $(function() {
 			// is the video being displayed or hidden?
 			if (statusSwitch) {
 				$overlay.hide();
+				console.log('video is here');
+			} else {
+				console.log('video is blank');
 			}
 
-			var myVideo = document.getElementById("ctrl");
-			myVideo.play();
+			ctrlVideo.play();
 			console.log('video is playing');
 
 			// reset everything for next play after the video has ended
-			myVideo.onended = function() {
+			ctrlVideo.onended = function() {
+				$overlay.show();
 				this.pause();
 				this.currentTime = 0;
-				statusVideo = false;
-				$overlay.show();
+				this.load();
+				statusVideo = false;				
 				console.log('video has ended. application is ready for next input');
-			}
-
-			// // reset everything for next play after the video has ended
-			// setTimeout(function() {
-			// 	var myVideo = document.getElementById("ctrl");
-			// 	myVideo.currentTime = 0;
-			// 	statusVideo = false;
-			// 	$overlay.show();
-			// 	console.log('video has ended. application is ready for next input');
-
-			// }, VIDEO_RUNTIME);
+			};
 		}
 	}
 });
