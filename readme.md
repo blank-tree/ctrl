@@ -1,5 +1,7 @@
 # CTRL
 
+Interactive video installation around the cybernetics hypothesis.
+
 ## Setup
 ### Hardware
 To run this project, you need the following:
@@ -23,7 +25,7 @@ Check the versions
 
 ```
 $ node -v
-v12.10.0
+v11.10.0
 
 $ npm -v
 6.9.0
@@ -43,12 +45,23 @@ Afterwards, clone this repository
 git clone git@github.com:blank-tree/ctrl.git
 cd ctrl
 npm install
+```
+
+#### Application configuration
+
+Now edit the `config.js` file with the correct pins (`PIN_BUTTON` and `PIN_SWITCH`)for the button and the switch, and the device number (`DEVICE_NO`).
+
+Start the application
+
+```
 node app.js
 ```
 
 Check in Chromium if you reach the site `localhost:3000`. If that works, start using the daemon to start the node application on start:
 
 #### Autostart Node.js application
+
+Quit the running application first with `ctrl+c`.
 
 ```
 sudo npm install -g pm2
@@ -87,3 +100,28 @@ This will save the current state of PM2 (with app.js running) in a dump file tha
 You will be able to check anytime the status of your application with `pm2 list`, `pm2 status` or `pm2 show`.
 
 #### Autostart Chromium
+
+To start chromium with the website on startup, edit this file
+
+```
+sudo vim /home/pi/.config/lxsession/LXDE-pi/autostart
+```
+
+And add this
+
+```
+# this is a comment
+@xset s off
+@xset -dpms
+@xset s noblank
+@chromium-browser --kiosk http://localhost:3000  # load chromium after boot and open the website in full screen mode
+```
+
+To quit chromium with an attached keyboard, open the menu with the windows key, navigate to the terminal and use
+
+```
+sudo killall chromium-browser
+```
+
+## License
+All rights reserved. 2019 – Fernando Obieta
