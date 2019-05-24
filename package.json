@@ -8,6 +8,7 @@
   },
   "author": "Fernando Obieta",
   "license": "ISC",
+  "private": true,
   "dependencies": {
     "express": "^4.17.0",
     "jquery": "^3.4.1",

@@ -40,6 +40,8 @@ server.listen(3000, () => {
 
 
 // Button and Switches
+// This is only being used, when running on a raspberry pi with the GPIO
+// for testing purposes, the front end also has keyboard triggers
 if (RPI) {
 	button.watch((err, value) => {
 		if (err) {

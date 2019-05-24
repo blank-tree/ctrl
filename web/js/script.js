@@ -15,7 +15,6 @@ $(function() {
 	}
 	var statusVideo = false;
 	var $overlay = $('#overlay');
-	var $mainWrapper = $('#main-wrapper');
 	var ctrlVideo = document.getElementById('ctrl');
 
 	if (DEVICE_ID === 0) {
