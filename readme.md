@@ -31,7 +31,7 @@ $ npm -v
 6.9.0
 ```
 
-Install Vim for immideate changes you need to make
+Install Vim for immediate changes you need to make
 
 ```
 sudo apt-get update

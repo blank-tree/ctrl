@@ -4,10 +4,10 @@
 
 // Settings
 var DEVICE_ID = 0;
-var PIN_BUTTON = 2;
-var PIN_SWITCH_VIDEO = 4;
+var PIN_BUTTON = 23;
+var PIN_SWITCH_VIDEO = 18;
 if (DEVICE_ID === 0) {
-	var PIN_SWITCH_VOICEOVER = 6;
+	var PIN_SWITCH_VOICEOVER = 21;
 }
 var RPI = false;
 
