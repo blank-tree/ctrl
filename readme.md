@@ -17,7 +17,7 @@ Install [Raspbian Strech with desktop](https://www.raspberrypi.org/downloads/ras
 
 ```
 sudo apt-get update
-curl -sL https://deb.nodesource.com/setup_12.x | bash -
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 sudo apt-get install -y nodejs
 ```
 
