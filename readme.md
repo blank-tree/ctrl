@@ -38,6 +38,19 @@ sudo apt-get update
 sudo apt-get install vim -y
 ```
 
+Change the `raspi-config` with the following command
+
+```
+sudo raspi-config
+```
+
+And change in `Advanced Options` following items:
+
+- `Audio` to `Force audio out through 3.5mm jack`
+- `Memory split` to `256`
+- `GL` to `Full KMS`
+
+
 #### Repository
 Afterwards, clone this repository
 
@@ -62,6 +75,14 @@ cd web/js
 vim script.js
 ```
 
+Open the installed Chromium browser an go to the following url:
+```
+chrome://flags/#autoplay-policy
+```
+
+and change the settings to `No user gesture is required`, relaunch Chromium and close it afterwards.
+
+
 Start the application
 
 ```
@@ -70,11 +91,17 @@ cd ..
 node app.js
 ```
 
-Check in Chromium if you reach the site `localhost:3000`. If that works, start using the daemon to start the node application on start:
+Open an additional terminal window with `ctrl+shift+n` and test the setup with the following command
+
+```
+chromium-browser --enable-webgl --ignore-gpu-blacklist --kiosk http://localhost:3000
+```
+
+It will be a bit laggy (which is intended for this project) and the switches need to be turned on and off after starting. When everything works, quit chromium with `alt+F4` and continue.
 
 #### Autostart Node.js application
 
-Quit the running application first with `ctrl+c`.
+Quit the running node application first with `ctrl+c`.
 
 ```
 sudo npm install -g pm2
@@ -127,7 +154,7 @@ And add this
 @xset s off
 @xset -dpms
 @xset s noblank
-@chromium-browser --kiosk http://localhost:3000  # load chromium after boot and open the website in full screen mode
+@chromium-browser --enable-webgl --ignore-gpu-blacklist --kiosk http://localhost:3000  # load chromium after boot and open the website in full screen mode
 ```
 
 To quit chromium with an attached keyboard, open the menu with the windows key, navigate to the terminal and use

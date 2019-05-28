@@ -9,7 +9,7 @@ var PIN_SWITCH_VIDEO = 18;
 if (DEVICE_ID === 0) {
 	var PIN_SWITCH_VOICEOVER = 21;
 }
-var RPI = false;
+var RPI = true;
 
 
 // Application

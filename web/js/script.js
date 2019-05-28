@@ -2,7 +2,7 @@ $(function() {
 
 	// Settings
 	const DEVICE_ID = 0;
-	const RPI = false;
+	const RPI = true;
 	const PATH_CTRL_0_VOICEOVER = "video/ctrl-0-voiceover.mov";
 	const PATH_CTRL_0_NO_VOICEOVER = "video/ctrl-0-no_voiceover.mov";
 	const PATH_CTRL_1 = "video/ctrl-1.mov";
@@ -82,6 +82,9 @@ $(function() {
 					ctrlVideo.load();
 				}
 				console.log('video voiceover is ' + statusVoiceover);
+			} else {
+				ctrlVideo.src = PATH_CTRL_1;
+				ctrlVideo.load();
 			}
 			
 			// is the video being displayed or hidden?
