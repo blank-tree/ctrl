@@ -1,5 +1,7 @@
 body {
 	margin: 0;
+	overflow-y: hidden;
+	cursor: none;
 }
 
 #overlay {
