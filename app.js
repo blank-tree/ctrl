@@ -23,7 +23,8 @@ var statusVideo = false;
 
 // Omx
 var Omx = require('node-omxplayer');
-var player = Omx(DEVICE_ID === 0 ? PATH_CTRL_0_VOICEOVER : PATH_CTRL_1);
+var player = Omx(DEVICE_ID === 0 ? PATH_CTRL_0_VOICEOVER : PATH_CTRL_1, 'both', true);
+player.pause();
 
 // GPIO
 var Gpio = require('onoff').Gpio;
@@ -41,13 +42,17 @@ button.watch((err, value) => {
 
 	console.log('button pressed');
 
-	if (!statusVideo) {
+	if (!statusVideo && value === 1) {
 		statusVideo = true;
+		console.log('video started');
 
 		if (statusSwitch) {
 			if (DEVICE_ID === 0) {
-				player.newSource(switchVoiceover ? 
-					PATH_CTRL_0_VOICEOVER : PATH_CTRL_0_NO_VOICEOVER);
+				player.newSource(statusVoiceover ? 
+					PATH_CTRL_0_VOICEOVER : PATH_CTRL_0_NO_VOICEOVER, 'both', true);
+				console.log('video0 plays. voiceover: ' + statusVoiceover);
+			} else {
+				console.log('video1 plays');
 			}
 			player.play();
 		}
@@ -55,6 +60,7 @@ button.watch((err, value) => {
 		setTimeout(function() {
 			statusVideo = false;
 			player.rewind();
+			player.play();
 			player.pause();
 			console.log('ready for next play');
 		}, videoDuration);
@@ -76,7 +82,7 @@ if (DEVICE_ID === 0) {
 			console.log(err);
 		}
 
-		switchVoiceover = value === 1;
-		console.log('voiceover switch: ' + switchVoiceover);
+		statusVoiceover = value === 1;
+		console.log('voiceover switch: ' + statusVoiceover);
 	});
 }
