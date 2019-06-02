@@ -10,8 +10,11 @@ if (DEVICE_ID === 0) {
 	var PIN_SWITCH_VOICEOVER = 21;
 }
 var PATH_CTRL_0_NO_VOICEOVER = "video/ctrl-0-no_voiceover.mov";
+var PATH_CTRL_0_NO_VOICEOVER_BLANK = "video/ctrl-0-no_voiceover-blank.mov";
 var PATH_CTRL_0_VOICEOVER = "video/ctrl-0-voiceover.mov";
+var PATH_CTRL_0_VOICEOVER_BLANK = "video/ctrl-0-voiceover-blank.mov";
 var PATH_CTRL_1 = "video/ctrl-1.mov";
+var PATH_CTRL_1_BLANK = "video/ctrl-1-blank.mov";
 var videoDuration = 307000; // in ms
 
 // Application
@@ -46,16 +49,27 @@ button.watch((err, value) => {
 		statusVideo = true;
 		console.log('video started');
 
-		if (statusSwitch) {
-			if (DEVICE_ID === 0) {
+		if (DEVICE_ID === 0) {
+			if (statusSwitch) {
+				console.log('ctrl0 playing. voiceover: ' statusVoiceover);
 				player.newSource(statusVoiceover ? 
 					PATH_CTRL_0_VOICEOVER : PATH_CTRL_0_NO_VOICEOVER, 'both', true);
-				console.log('video0 plays. voiceover: ' + statusVoiceover);
 			} else {
-				console.log('video1 plays');
+				console.log('ctrl0 playing blank. voiceover: ' statusVoiceover);
+				player.newSource(statusVoiceover ? 
+					PATH_CTRL_0_VOICEOVER_BLANK : PATH_CTRL_0_NO_VOICEOVER_BLANK, 'both', true);
 			}
-			player.play();
+		} else {
+			if (statusSwitch) {
+				console.log('ctrl1 playing');
+				player.newSource(PATH_CTRL_1, 'both', true);
+			} else {
+				console.log('ctrl1 playing blank');
+				player.newSource(PATH_CTRL_1_BLANK, 'both', true);
+			}
 		}
+		
+		player.play();
 
 		setTimeout(function() {
 			statusVideo = false;
