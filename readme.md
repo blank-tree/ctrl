@@ -62,42 +62,17 @@ npm install
 
 #### Application configuration
 
-Now edit the `app.js` file with the correct pins (`PIN_BUTTON` and `PIN_SWITCH`)for the button and the switch, and the device number (`DEVICE_NO`) with
+Now edit the `app.js` file with the correct pins (`PIN_BUTTON` and `PIN_SWITCH`)for the button and the switch, the device number (`DEVICE_NO`) and the paths to the videos (`PATH_CTRL_0_VOICEOVER`, `PATH_CTRL_0_NO_VOICEOVER` and `PATH_CTRL_1`) to the video files. Don't forget the file extension.
 
 ```
 vim app.js
 ```
 
-Load your video files into `web/video/`. Also edit the `script.js`file in `web/js/script.js` and set the device number (`DEVICE_ID`) and the paths to the videos (`PATH_CTRL_0_VOICEOVER`, `PATH_CTRL_0_NO_VOICEOVER` and `PATH_CTRL_1`) to the video files. Don't forget the file extension. The files are being served by express and need to be in this format: `video/YOUR_FILE.mov`.
-
-```
-cd web/js
-vim script.js
-```
-
-Open the installed Chromium browser an go to the following url:
-```
-chrome://flags/#autoplay-policy
-```
-
-and change the settings to `No user gesture is required`, relaunch Chromium and close it afterwards.
-
-
 Start the application
 
 ```
-cd ..
-cd ..
 node app.js
 ```
-
-Open an additional terminal window with `ctrl+shift+n` and test the setup with the following command
-
-```
-chromium-browser --enable-webgl --ignore-gpu-blacklist --kiosk http://localhost:3000
-```
-
-It will be a bit laggy (which is intended for this project) and the switches need to be turned on and off after starting. When everything works, quit chromium with `alt+F4` and continue.
 
 #### Autostart Node.js application
 
@@ -138,30 +113,6 @@ pm2 save
 This will save the current state of PM2 (with app.js running) in a dump file that will be used when resurrecting PM2.
 
 You will be able to check anytime the status of your application with `pm2 list`, `pm2 status` or `pm2 show`.
-
-#### Autostart Chromium
-
-To start chromium with the website on startup, edit this file
-
-```
-sudo vim /home/pi/.config/lxsession/LXDE-pi/autostart
-```
-
-And add this
-
-```
-# this is a comment
-@xset s off
-@xset -dpms
-@xset s noblank
-@chromium-browser --enable-webgl --ignore-gpu-blacklist --kiosk http://localhost:3000  # load chromium after boot and open the website in full screen mode
-```
-
-To quit chromium with an attached keyboard, open the menu with the windows key, navigate to the terminal and use
-
-```
-sudo killall chromium-browser
-```
 
 ## License
 All rights reserved. 2019 – Fernando Obieta

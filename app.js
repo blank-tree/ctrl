@@ -9,63 +9,74 @@ var PIN_SWITCH_VIDEO = 18;
 if (DEVICE_ID === 0) {
 	var PIN_SWITCH_VOICEOVER = 21;
 }
-var RPI = true;
-
+var PATH_CTRL_0_NO_VOICEOVER = "video/ctrl-0-no_voiceover.mov";
+var PATH_CTRL_0_VOICEOVER = "video/ctrl-0-voiceover.mov";
+var PATH_CTRL_1 = "video/ctrl-1.mov";
+var videoDuration = 307000; // in ms
 
 // Application
+var statusSwitch = false;
+if (DEVICE_ID === 0) {
+	var statusVoiceover = false;
+}
+var statusVideo = false;
+
+// Omx
+var Omx = require('node-omxplayer');
+var player = Omx(DEVICE_ID === 0 ? PATH_CTRL_0_VOICEOVER : PATH_CTRL_1);
+
 // GPIO
-if (RPI) {
-	var Gpio = require('onoff').Gpio;
-	var button = new Gpio(PIN_BUTTON, 'in', 'both');
-	var switchVideo = new Gpio(PIN_SWITCH_VIDEO, 'in', 'both');
-	if (DEVICE_ID === 0) {
-		var switchVoiceover = new Gpio(PIN_SWITCH_VOICEOVER, 'in', 'both');
-	}
+var Gpio = require('onoff').Gpio;
+var button = new Gpio(PIN_BUTTON, 'in', 'both');
+var switchVideo = new Gpio(PIN_SWITCH_VIDEO, 'in', 'both');
+if (DEVICE_ID === 0) {
+	var switchVoiceover = new Gpio(PIN_SWITCH_VOICEOVER, 'in', 'both');
 }
 
-// Server
-var express = require('express');
-var http = require('http').Server;
-var socket = require('socket.io');
+// Button and Switches
+button.watch((err, value) => {
+	if (err) {
+		console.log(err);
+	}
 
-let app = express();
-let server = http(app);
-let io = socket(server);
+	console.log('button pressed');
 
-app.use(express.static('web'));
+	if (!statusVideo) {
+		statusVideo = true;
 
-server.listen(3000, () => {
-	console.log('listening on *:3000');
+		if (statusSwitch) {
+			if (DEVICE_ID === 0) {
+				player.newSource(switchVoiceover ? 
+					PATH_CTRL_0_VOICEOVER : PATH_CTRL_0_NO_VOICEOVER);
+			}
+			player.play();
+		}
+
+		setTimeout(function() {
+			statusVideo = false;
+			player.rewind();
+			player.pause();
+			console.log('ready for next play');
+		}, videoDuration);
+	}
 });
 
-
-// Button and Switches
-// This is only being used, when running on a raspberry pi with the GPIO
-// for testing purposes, the front end also has keyboard triggers
-if (RPI) {
-	button.watch((err, value) => {
-		if (err) {
-			console.log(err);
-		}
-
-		io.emit('button', value);
-	});
-
-	switchVideo.watch((err, value) => {
-		if (err) {
-			console.log(err);
-		}
-
-		io.emit('switch', value);
-	});
-
-	if (DEVICE_ID === 0) {
-		switchVoiceover.watch((err, value) => {
-			if (err) {
-				console.log(err);
-			}
-
-			io.emit('voiceover', value);
-		});
+switchVideo.watch((err, value) => {
+	if (err) {
+		console.log(err);
 	}
+
+	statusSwitch = value === 1;
+	console.log('status switch: ' + statusSwitch);
+});
+
+if (DEVICE_ID === 0) {
+	switchVoiceover.watch((err, value) => {
+		if (err) {
+			console.log(err);
+		}
+
+		switchVoiceover = value === 1;
+		console.log('voiceover switch: ' + switchVoiceover);
+	});
 }
