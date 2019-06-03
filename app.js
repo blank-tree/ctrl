@@ -87,7 +87,7 @@ function startVideo() {
 }
 
 function startBlank() {
-	player.stop();
+	// player.stop();
 	player = manager.create(PATH_BLANK, omxSettingsLoop);
 	player.play();
 	player.pause();
@@ -102,11 +102,10 @@ button.watch((err, value) => {
 		console.log(err);
 	}
 
-	console.log('button: ' + value);
-
 	if (!statusVideo && value === 1) {
 		startVideo();
 	}
+	console.log('button: ' + value);
 });
 
 switchVideo.watch((err, value) => {
