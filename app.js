@@ -28,7 +28,8 @@ var statusVideo = false;
 // Omx
 var omxSettings = {
 	'--blank': true,
-	'--no-osd': true
+	'--no-osd': true,
+	'-o': 'local'
 };
 var OmxManager = require('omx-manager');
 var manager = new OmxManager(); // OmxManager
