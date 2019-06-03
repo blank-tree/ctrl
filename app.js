@@ -16,6 +16,7 @@ var PATH_CTRL_0_VOICEOVER = PATH_DIRECTORY + "ctrl-0-voiceover.mov";
 var PATH_CTRL_0_VOICEOVER_BLANK = PATH_DIRECTORY + "ctrl-0-voiceover-blank.mov";
 var PATH_CTRL_1 = PATH_DIRECTORY + "ctrl-1.mov";
 var PATH_CTRL_1_BLANK = PATH_DIRECTORY + "ctrl-1-blank.mov";
+var PATH_BLANK = PATH_DIRECTORY + "blank.mov";
 
 // Application
 var statusSwitch = false;
@@ -26,6 +27,14 @@ var statusVideo = false;
 
 // Omx
 var omxSettings = {
+	'-o': 'both',
+	'p': true,
+	'--blank': true,
+	'--no-osd': true,
+	'--no-keys': true
+};
+var omxSettingsLoop = {
+	'--loop': true,
 	'-o': 'both',
 	'p': true,
 	'--blank': true,
@@ -57,24 +66,26 @@ button.watch((err, value) => {
 		statusVideo = true;
 		console.log('video started');
 
+		var currentVideoPath = DEVICE_ID === 0 ? PATH_CTRL_0_VOICEOVER : PATH_CTRL_1;
 		if (DEVICE_ID === 0) {
 			if (statusSwitch) {
+				currentVideoPath = statusVoiceover ? PATH_CTRL_0_VOICEOVER : PATH_CTRL_0_NO_VOICEOVER;
 				console.log('ctrl0 playing. voiceover: ' + statusVoiceover);
-				var player = manager.create(statusVoiceover ? PATH_CTRL_0_VOICEOVER : PATH_CTRL_0_NO_VOICEOVER, omxSettings);
 			} else {
+				currentVideoPath = statusVoiceover ? PATH_CTRL_0_VOICEOVER_BLANK : PATH_CTRL_0_NO_VOICEOVER_BLANK;
 				console.log('ctrl0 playing blank. voiceover: ' + statusVoiceover);
-				var player = manager.create(statusVoiceover ? PATH_CTRL_0_VOICEOVER_BLANK : PATH_CTRL_0_NO_VOICEOVER_BLANK, omxSettings);
 			}
 		} else {
 			if (statusSwitch) {
+				currentVideoPath = PATH_CTRL_1;
 				console.log('ctrl1 playing');
-				var player = manager.create(PATH_CTRL_1, omxSettings);
 			} else {
+				currentVideoPath = PATH_CTRL_1_BLANK;
 				console.log('ctrl1 playing blank');
-				var player = manager.create(PATH_CTRL_1_BLANK, omxSettings);
 			}
 		}
 
+		var player = manager.create(currentVideoPath, omxSettings);
 		player.play();
 
 		player.on('end', function() {

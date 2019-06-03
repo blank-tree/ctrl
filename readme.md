@@ -38,18 +38,6 @@ sudo apt-get update
 sudo apt-get install vim -y
 ```
 
-Change the `raspi-config` with the following command
-
-```
-sudo raspi-config
-```
-
-And change in `Advanced Options` following items:
-
-- `Audio` to `Force audio out through 3.5mm jack`
-- `Memory split` to `256`
-- `GL` to `Full KMS`
-
 
 #### Repository
 Afterwards, clone this repository
@@ -62,7 +50,7 @@ npm install
 
 #### Application configuration
 
-Now edit the `app.js` file with the correct pins (`PIN_BUTTON` and `PIN_SWITCH`)for the button and the switch, the device number (`DEVICE_NO`) and the paths to the videos (`PATH_CTRL_0_VOICEOVER`, `PATH_CTRL_0_NO_VOICEOVER` and `PATH_CTRL_1`) to the video files. Don't forget the file extension.
+Now edit the `app.js` file with the correct pins (`PIN_BUTTON` and `PIN_SWITCH`)for the button and the switch, the device number (`DEVICE_NO`) and the paths to the video files. Don't forget the file extension.
 
 ```
 vim app.js
