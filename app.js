@@ -51,11 +51,11 @@ button.watch((err, value) => {
 
 		if (DEVICE_ID === 0) {
 			if (statusSwitch) {
-				console.log('ctrl0 playing. voiceover: ' statusVoiceover);
+				console.log('ctrl0 playing. voiceover: ' + statusVoiceover);
 				player.newSource(statusVoiceover ? 
 					PATH_CTRL_0_VOICEOVER : PATH_CTRL_0_NO_VOICEOVER, 'both', true);
 			} else {
-				console.log('ctrl0 playing blank. voiceover: ' statusVoiceover);
+				console.log('ctrl0 playing blank. voiceover: ' + statusVoiceover);
 				player.newSource(statusVoiceover ? 
 					PATH_CTRL_0_VOICEOVER_BLANK : PATH_CTRL_0_NO_VOICEOVER_BLANK, 'both', true);
 			}
@@ -68,16 +68,17 @@ button.watch((err, value) => {
 				player.newSource(PATH_CTRL_1_BLANK, 'both', true);
 			}
 		}
-		
+
 		player.play();
 
 		setTimeout(function() {
+			player = Omx(DEVICE_ID === 0 ? PATH_CTRL_0_VOICEOVER : PATH_CTRL_1, 'both', true);
 			statusVideo = false;
 			player.rewind();
 			player.play();
 			player.pause();
 			console.log('ready for next play');
-		}, videoDuration);
+		}, videoDuration + 5000);
 	}
 });
 
