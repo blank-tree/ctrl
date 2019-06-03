@@ -30,17 +30,13 @@ var omxSettings = {
 	'--blank': true,
 	'--no-osd': true
 };
-var omxSettingsLoop = {
-	'--loop': true,
-	'--blank': true,
-	'--no-osd': true
-};
 var OmxManager = require('omx-manager');
 var manager = new OmxManager(); // OmxManager
 // var camera = manager.create('video.avi'); // OmxInstance
 // camera.play(); // Will start the process to play videos
-var player = manager.create(PATH_BLANK, omxSettingsLoop);
+var player = manager.create(PATH_BLANK, omxSettings);
 player.play();
+player.pause();
 
 // GPIO
 var Gpio = require('onoff').Gpio;
@@ -93,8 +89,6 @@ function startBlank() {
 	player.pause();
 	console.log('blank is running');
 }
-
-startBlank();
 
 // Button and Switches
 button.watch((err, value) => {
