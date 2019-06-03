@@ -10,7 +10,7 @@
   "license": "ISC",
   "private": true,
   "dependencies": {
-    "node-omxplayer": "^0.6.1",
+    "omx-manager": "^0.1.4",
     "onoff": "^4.1.1"
   }
 }

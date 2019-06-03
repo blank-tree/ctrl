@@ -9,13 +9,13 @@ var PIN_SWITCH_VIDEO = 18;
 if (DEVICE_ID === 0) {
 	var PIN_SWITCH_VOICEOVER = 21;
 }
-var PATH_CTRL_0_NO_VOICEOVER = "video/ctrl-0-no_voiceover.mov";
-var PATH_CTRL_0_NO_VOICEOVER_BLANK = "video/ctrl-0-no_voiceover-blank.mov";
-var PATH_CTRL_0_VOICEOVER = "video/ctrl-0-voiceover.mov";
-var PATH_CTRL_0_VOICEOVER_BLANK = "video/ctrl-0-voiceover-blank.mov";
-var PATH_CTRL_1 = "video/ctrl-1.mov";
-var PATH_CTRL_1_BLANK = "video/ctrl-1-blank.mov";
-var videoDuration = 307000; // in ms
+var PATH_DIRECTORY = "video/";
+var PATH_CTRL_0_NO_VOICEOVER = PATH_DIRECTORY + "ctrl-0-no_voiceover.mov";
+var PATH_CTRL_0_NO_VOICEOVER_BLANK = PATH_DIRECTORY + "ctrl-0-no_voiceover-blank.mov";
+var PATH_CTRL_0_VOICEOVER = PATH_DIRECTORY + "ctrl-0-voiceover.mov";
+var PATH_CTRL_0_VOICEOVER_BLANK = PATH_DIRECTORY + "ctrl-0-voiceover-blank.mov";
+var PATH_CTRL_1 = PATH_DIRECTORY + "ctrl-1.mov";
+var PATH_CTRL_1_BLANK = PATH_DIRECTORY + "ctrl-1-blank.mov";
 
 // Application
 var statusSwitch = false;
@@ -25,9 +25,17 @@ if (DEVICE_ID === 0) {
 var statusVideo = false;
 
 // Omx
-var Omx = require('node-omxplayer');
-var player = Omx(DEVICE_ID === 0 ? PATH_CTRL_0_VOICEOVER : PATH_CTRL_1, 'both', true);
-player.pause();
+var omxSettings = {
+	'-o': 'both',
+	'p': true,
+	'--blank': true,
+	'--no-osd': true,
+	'--no-keys': true
+};
+var OmxManager = require('omx-manager');
+var manager = new OmxManager(); // OmxManager
+// var camera = manager.create('video.avi'); // OmxInstance
+// camera.play(); // Will start the process to play videos
 
 // GPIO
 var Gpio = require('onoff').Gpio;
@@ -52,33 +60,27 @@ button.watch((err, value) => {
 		if (DEVICE_ID === 0) {
 			if (statusSwitch) {
 				console.log('ctrl0 playing. voiceover: ' + statusVoiceover);
-				player.newSource(statusVoiceover ? 
-					PATH_CTRL_0_VOICEOVER : PATH_CTRL_0_NO_VOICEOVER, 'both', true);
+				var player = manager.create(statusVoiceover ? PATH_CTRL_0_VOICEOVER : PATH_CTRL_0_NO_VOICEOVER, omxSettings);
 			} else {
 				console.log('ctrl0 playing blank. voiceover: ' + statusVoiceover);
-				player.newSource(statusVoiceover ? 
-					PATH_CTRL_0_VOICEOVER_BLANK : PATH_CTRL_0_NO_VOICEOVER_BLANK, 'both', true);
+				var player = manager.create(statusVoiceover ? PATH_CTRL_0_VOICEOVER_BLANK : PATH_CTRL_0_NO_VOICEOVER_BLANK, omxSettings);
 			}
 		} else {
 			if (statusSwitch) {
 				console.log('ctrl1 playing');
-				player.newSource(PATH_CTRL_1, 'both', true);
+				var player = manager.create(PATH_CTRL_1, omxSettings);
 			} else {
 				console.log('ctrl1 playing blank');
-				player.newSource(PATH_CTRL_1_BLANK, 'both', true);
+				var player = manager.create(PATH_CTRL_1_BLANK, omxSettings);
 			}
 		}
 
 		player.play();
 
-		setTimeout(function() {
-			player = Omx(DEVICE_ID === 0 ? PATH_CTRL_0_VOICEOVER : PATH_CTRL_1, 'both', true);
+		player.on('end', function() {
 			statusVideo = false;
-			player.rewind();
-			player.play();
-			player.pause();
 			console.log('ready for next play');
-		}, videoDuration + 5000);
+		});
 	}
 });
 
