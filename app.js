@@ -27,24 +27,20 @@ var statusVideo = false;
 
 // Omx
 var omxSettings = {
-	'-o': 'both',
-	'p': true,
 	'--blank': true,
-	'--no-osd': true,
-	'--no-keys': true
+	'--no-osd': true
 };
 var omxSettingsLoop = {
 	'--loop': true,
-	'-o': 'both',
-	'p': true,
 	'--blank': true,
-	'--no-osd': true,
-	'--no-keys': true
+	'--no-osd': true
 };
 var OmxManager = require('omx-manager');
 var manager = new OmxManager(); // OmxManager
 // var camera = manager.create('video.avi'); // OmxInstance
 // camera.play(); // Will start the process to play videos
+var player = manager.create(PATH_BLANK, omxSettingsLoop);
+player.play();
 
 // GPIO
 var Gpio = require('onoff').Gpio;
@@ -57,9 +53,7 @@ if (DEVICE_ID === 0) {
 // Video Functions
 function startVideo() {
 	statusVideo = true;
-	console.log('video started');
 
-	player.stop();
 	var currentVideoPath = DEVICE_ID === 0 ? PATH_CTRL_0_VOICEOVER : PATH_CTRL_1;
 	if (DEVICE_ID === 0) {
 		if (statusSwitch) {
@@ -79,8 +73,11 @@ function startVideo() {
 		}
 	}
 
-	var player = manager.create(currentVideoPath, omxSettings);
+	player.stop();
+	player = manager.create(currentVideoPath, omxSettings);
 	player.play();
+
+	console.log('video started');
 
 	player.on('end', function() {
 		statusVideo = false;
@@ -90,7 +87,8 @@ function startVideo() {
 }
 
 function startBlank() {
-	var player = manager.create(PATH_BLANK, omxSettingsLoop);
+	player.stop();
+	player = manager.create(PATH_BLANK, omxSettingsLoop);
 	player.play();
 	player.pause();
 	console.log('blank is running');
@@ -104,7 +102,7 @@ button.watch((err, value) => {
 		console.log(err);
 	}
 
-	console.log('button pressed');
+	console.log('button: ' + value);
 
 	if (!statusVideo && value === 1) {
 		startVideo();
