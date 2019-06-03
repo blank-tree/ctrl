@@ -54,6 +54,50 @@ if (DEVICE_ID === 0) {
 	var switchVoiceover = new Gpio(PIN_SWITCH_VOICEOVER, 'in', 'both');
 }
 
+// Video Functions
+function startVideo() {
+	statusVideo = true;
+	console.log('video started');
+
+	player.stop();
+	var currentVideoPath = DEVICE_ID === 0 ? PATH_CTRL_0_VOICEOVER : PATH_CTRL_1;
+	if (DEVICE_ID === 0) {
+		if (statusSwitch) {
+			currentVideoPath = statusVoiceover ? PATH_CTRL_0_VOICEOVER : PATH_CTRL_0_NO_VOICEOVER;
+			console.log('ctrl0 playing. voiceover: ' + statusVoiceover);
+		} else {
+			currentVideoPath = statusVoiceover ? PATH_CTRL_0_VOICEOVER_BLANK : PATH_CTRL_0_NO_VOICEOVER_BLANK;
+			console.log('ctrl0 playing blank. voiceover: ' + statusVoiceover);
+		}
+	} else {
+		if (statusSwitch) {
+			currentVideoPath = PATH_CTRL_1;
+			console.log('ctrl1 playing');
+		} else {
+			currentVideoPath = PATH_CTRL_1_BLANK;
+			console.log('ctrl1 playing blank');
+		}
+	}
+
+	var player = manager.create(currentVideoPath, omxSettings);
+	player.play();
+
+	player.on('end', function() {
+		statusVideo = false;
+		startBlank();
+		console.log('ready for next play');
+	});
+}
+
+function startBlank() {
+	var player = manager.create(PATH_BLANK, omxSettingsLoop);
+	player.play();
+	player.pause();
+	console.log('blank is running');
+}
+
+startBlank();
+
 // Button and Switches
 button.watch((err, value) => {
 	if (err) {
@@ -63,35 +107,7 @@ button.watch((err, value) => {
 	console.log('button pressed');
 
 	if (!statusVideo && value === 1) {
-		statusVideo = true;
-		console.log('video started');
-
-		var currentVideoPath = DEVICE_ID === 0 ? PATH_CTRL_0_VOICEOVER : PATH_CTRL_1;
-		if (DEVICE_ID === 0) {
-			if (statusSwitch) {
-				currentVideoPath = statusVoiceover ? PATH_CTRL_0_VOICEOVER : PATH_CTRL_0_NO_VOICEOVER;
-				console.log('ctrl0 playing. voiceover: ' + statusVoiceover);
-			} else {
-				currentVideoPath = statusVoiceover ? PATH_CTRL_0_VOICEOVER_BLANK : PATH_CTRL_0_NO_VOICEOVER_BLANK;
-				console.log('ctrl0 playing blank. voiceover: ' + statusVoiceover);
-			}
-		} else {
-			if (statusSwitch) {
-				currentVideoPath = PATH_CTRL_1;
-				console.log('ctrl1 playing');
-			} else {
-				currentVideoPath = PATH_CTRL_1_BLANK;
-				console.log('ctrl1 playing blank');
-			}
-		}
-
-		var player = manager.create(currentVideoPath, omxSettings);
-		player.play();
-
-		player.on('end', function() {
-			statusVideo = false;
-			console.log('ready for next play');
-		});
+		startVideo();
 	}
 });
 
