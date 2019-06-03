@@ -3,6 +3,7 @@
  */
 
 // Settings
+var active = true;
 var DEVICE_ID = 0;
 var PIN_BUTTON = 23;
 var PIN_SWITCH_VIDEO = 18;
@@ -35,9 +36,11 @@ var OmxManager = require('omx-manager');
 var manager = new OmxManager(); // OmxManager
 // var camera = manager.create('video.avi'); // OmxInstance
 // camera.play(); // Will start the process to play videos
-var player = manager.create(PATH_BLANK, omxSettings);
-player.play();
-player.pause();
+if (active) {
+	var player = manager.create(PATH_BLANK, omxSettings);
+	player.play();
+	player.pause();
+}
 
 // GPIO
 var Gpio = require('onoff').Gpio;
@@ -70,24 +73,30 @@ function startVideo() {
 		}
 	}
 
-	player.stop();
-	player = manager.create(currentVideoPath, omxSettings);
-	player.play();
+	if (active) {
+		player.stop();
+		player = manager.create(currentVideoPath, omxSettings);
+		player.play();
+	}
 
 	console.log('video started');
 
-	player.on('end', function() {
-		statusVideo = false;
-		startBlank();
-		console.log('ready for next play');
-	});
+	if (active) {
+		player.on('end', function() {
+			statusVideo = false;
+			startBlank();
+			console.log('ready for next play');
+		});
+	}
 }
 
 function startBlank() {
 	// player.stop();
-	player = manager.create(PATH_BLANK, omxSettingsLoop);
-	player.play();
-	player.pause();
+	if (active) {
+		player = manager.create(PATH_BLANK, omxSettings);
+		player.play();
+		player.pause();
+	}
 	console.log('blank is running');
 }
 
