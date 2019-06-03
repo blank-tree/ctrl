@@ -102,5 +102,20 @@ This will save the current state of PM2 (with app.js running) in a dump file tha
 
 You will be able to check anytime the status of your application with `pm2 list`, `pm2 status` or `pm2 show`.
 
+#### Arm the devices
+
+Edit the ´app.js´ and switch the variable ´active´ in the settings to ´true´
+
+´´´
+vim app.js
+´´´
+
+Save and close and now reboot the device
+
+´´´
+reboot
+´´´
+
+
 ## License
 All rights reserved. 2019 – Fernando Obieta
