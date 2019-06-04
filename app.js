@@ -3,7 +3,7 @@
  */
 
 // Settings
-var active = true;
+var active = false;
 var DEVICE_ID = 0;
 var PIN_BUTTON = 23;
 var PIN_SWITCH_VIDEO = 18;

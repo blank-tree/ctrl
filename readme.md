@@ -104,17 +104,18 @@ You will be able to check anytime the status of your application with `pm2 list`
 
 #### Arm the devices
 
-Edit the ´app.js´ and switch the variable ´active´ in the settings to ´true´
+Edit the `app.js` and switch the variable `active` in the settings to `true`
 
-´´´
+
+```
 vim app.js
-´´´
+```
 
 Save and close and now reboot the device
 
-´´´
+```
 reboot
-´´´
+```
 
 
 ## License
