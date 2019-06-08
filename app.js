@@ -2,6 +2,9 @@
  * ctrl - node application
  */
 
+
+setTimeout(function() {
+
 // Settings
 var active = false;
 var DEVICE_ID = 0;
@@ -131,3 +134,5 @@ if (DEVICE_ID === 0) {
 		console.log('voiceover switch: ' + statusVoiceover);
 	});
 }
+
+}, 30000);
