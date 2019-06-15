@@ -4,6 +4,11 @@
 
 # CTRL
 
+5’ 07’’
+two projectors, stereo speaker set, control unit
+second-order observer: Marco Wettach
+voice acting & proof reading: Kylie Rüegger
+
 Interactive video installation around the cybernetics hypothesis.
 
 ## Setup
