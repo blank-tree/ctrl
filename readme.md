@@ -1,3 +1,7 @@
+![CTRL](https://blanktree.ch/wp-content/uploads/2019/06/190227-ctrl-typewriter.jpg)
+![CTRL – Control Unit](https://blanktree.ch/wp-content/uploads/2019/06/ctrl0.jpg)
+![CTRL – Exhibition](https://blanktree.ch/wp-content/uploads/2019/03/ctrl1.jpg)
+
 # CTRL
 
 Interactive video installation around the cybernetics hypothesis.
