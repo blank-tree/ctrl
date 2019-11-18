@@ -1,7 +1,3 @@
-![CTRL](https://blanktree.ch/wp-content/uploads/2019/06/190227-ctrl-typewriter.jpg)
-![CTRL – Control Unit](https://blanktree.ch/wp-content/uploads/2019/06/ctrl0.jpg)
-![CTRL – Exhibition](https://blanktree.ch/wp-content/uploads/2019/03/ctrl1.jpg)
-
 # CTRL
 
 5’ 07’’  
@@ -10,6 +6,10 @@ second-order observer: Marco Wettach
 voice acting & proof reading: Kylie Rüegger  
   
 Interactive video installation around the cybernetics hypothesis.
+
+![CTRL](https://be.fernando-obieta.com/wp-content/uploads/2019/07/190227-ctrl-typewriter.jpg)
+![CTRL – Control Unit](https://be.fernando-obieta.com/wp-content/uploads/2019/07/ctrl0.jpg)
+![CTRL – Exhibition](https://be.fernando-obieta.com/wp-content/uploads/2019/07/ctrl1.jpg)
 
 ## Setup
 ### Hardware
